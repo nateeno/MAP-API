@@ -1,0 +1,56 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "https://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Statistics Norway Statbank API - simple readymade dataset JSON-Stat example</title>
+    <!-- Add these JavaScript inclusions in the head of your page -->
+    <!-- json-stat.js - JSON-stat Javascript Toolkit (JJT) -->
+    <script type="text/javascript" src="https://json-stat.org/lib/json-stat.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="https://code.highcharts.com/highcharts.js"></script>
+  </head>
+  <body>
+    <script type="text/javascript">
+     /* Address to readymade json-stat dataset */
+    url="https://data.ssb.no/api/v0/dataset/1066.json?lang=en";
+    /* retrieve the dataset using jquery get */
+    $.get(url, function main(obj){
+      ds=JSONstat(obj).Dataset(0);
+
+      /*jQuery sjekk */
+      $(document).ready(function() {
+    /* Highcharts code */ 
+          $('#container').highcharts({
+            chart: {
+                type: 'line'
+              },
+            title: {
+              text: 'Retail Trade Index latest 13 months '  
+            },
+          /* get dimensions in JSON-Stat dataset. Tip: use F12 Console */
+            xAxis: [
+                {
+                    categories: ds.Dimension("Tid").id
+                }
+            ],          
+            yAxis: {
+              title: {
+                text: 'Index'
+              }
+            },
+            series:[
+            {
+              /* get months (ds. label) og serie (ds.value) in dataset */
+              name: ds.label,
+              data: ds.value}],
+            });
+      } 
+      /* End Highcharts code */
+    );  
+    })
+  </script>
+  <p>A very simple simple example using Statistics Norway's API, JSON-Stat and Highcharts. </p>
+  <!-- Add the container -->
+  <div id="container" style="width: 800px; height: 400px; margin: 0 auto"></div>
+  </body>
+</html>
